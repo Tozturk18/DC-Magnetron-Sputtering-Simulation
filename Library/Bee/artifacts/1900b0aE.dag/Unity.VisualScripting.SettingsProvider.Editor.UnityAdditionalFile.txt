@@ -1,1 +1,1 @@
-C:\Users\Tozturk\Electric Fields
+/Users/tozturk/Desktop/Tuna/Thesis/Unity_Simulation/DC-Magnetron-Sputtering-Simulation
