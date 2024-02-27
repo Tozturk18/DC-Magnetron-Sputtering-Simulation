@@ -134,18 +134,35 @@ public class ElectricFields : MonoBehaviour {
 
                 //Debug.Log($"Magnet: {magnet.name}, Type: {magnet.GetComponent<MagnetScript>().magnetType}");
 
+                float permeability = magnet.GetComponent<MagnetScript>().permeability;
+
                 switch (magnet.GetComponent<MagnetScript>().magnetType) {
                     case 0:
 
                         Debug.Log("Cylinder Magnet");
 
+                        Vector3 sphere = Cartesian_to_Spherical(atom.transform.position - magnet.transform.position); 
+                        
 
+                        Debug.Log("Position: " + (atom.transform.position - magnet.transform.position) + ", Spherical: " + sphere);
+
+                        sphere.Normalize();
+
+                        Debug.Log("Normalize: " +  sphere);
 
                         break;
                     
                     case 1:
 
                         Debug.Log("O-Ring Magnet");
+
+                        sphere = Cartesian_to_Spherical(atom.transform.position - magnet.transform.position); 
+
+                        Debug.Log("Position: " + atom.transform.position + ", Spherical: " + sphere);
+
+                        sphere.Normalize();
+
+                        Debug.Log("Normalize: " +  sphere);
 
                         break;
 
@@ -169,7 +186,7 @@ public class ElectricFields : MonoBehaviour {
 
         float avgVel = ( MathF.Abs(avgVelocity.x) + MathF.Abs(avgVelocity.y) + MathF.Abs(avgVelocity.z) ) / 3;
 
-        // Used temperature kinetic energy proportinality
+        // Used temperature kinetic energy proportionality
         // https://en.wikipedia.org/wiki/Kinetic_theory_of_gases
         float temp = (float) ( (1.0f / 3.0f) * ( avgMass * MathF.Pow(10, -4) * MathF.Pow(avgVel * 100, 2) ) / 1.380649f );
 
@@ -184,6 +201,28 @@ public class ElectricFields : MonoBehaviour {
         
 
         
+
+    }
+
+    private Vector3 Cartesian_to_Spherical(float x, float y, float z) {
+
+        return new Vector3( Mathf.Sqrt( Mathf.Pow(x,2) * Mathf.Pow(y,2) * Mathf.Pow(z,2) ), Mathf.Atan2(y,x), Mathf.Acos( z / Mathf.Sqrt( Mathf.Pow(x,2) * Mathf.Pow(y,2) * Mathf.Pow(z,2) ) ) );
+
+    }
+
+    private Vector3 Cartesian_to_Spherical(Vector3 v) {
+
+        float x = v.x;
+        float y = v.y;
+        float z = v.z;
+
+        return new Vector3( Mathf.Sqrt( Mathf.Pow(x,2) * Mathf.Pow(y,2) * Mathf.Pow(z,2) ), Mathf.Atan2(y,x), Mathf.Acos( z / Mathf.Sqrt( Mathf.Pow(x,2) * Mathf.Pow(y,2) * Mathf.Pow(z,2) ) ) );
+
+    }
+
+    private Vector3 Spherical_to_Cartesian(float radius, float theta, float phi) {
+
+        return new Vector3( radius * Mathf.Sin(phi) * Mathf.Cos(theta), radius * Mathf.Sin(phi) * Mathf.Sin(theta), radius * Mathf.Cos(phi) );
 
     }
 
